@@ -2,7 +2,6 @@ package storage
 
 import (
 	"context"
-	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,8 +16,6 @@ type User struct {
 	Password string `bson:"password" json:"password"`
 }
 
-var ErrUserExist error = errors.New("user is exist")
-
 func (m *Mongo) Connect(ctx context.Context, ip, port string) error {
 	var connErr error
 	opt := options.Client()
@@ -31,8 +28,9 @@ func (m *Mongo) Close() {
 }
 func (m *Mongo) CreateUser(ctx context.Context, user User) (string, error) {
 	res, err := m.mongo.Database("app").Collection("users").InsertOne(ctx, user)
-	if res == nil {
-		return "", err
+
+	if _, ok := err.(mongo.WriteException); ok {
+		return "", ErrUserExist
 	}
 	if id, ok := res.InsertedID.(string); ok {
 		return id, err
@@ -43,6 +41,9 @@ func (m *Mongo) ReadUser(ctx context.Context, login string) (User, error) {
 	res := m.mongo.Database("app").Collection("users").FindOne(ctx, bson.M{
 		"_id": login,
 	})
+	if res.Err() == mongo.ErrNoDocuments {
+		return User{}, ErrUserNotExist
+	}
 	if res.Err() != nil {
 		return User{}, res.Err()
 	}
@@ -50,21 +51,21 @@ func (m *Mongo) ReadUser(ctx context.Context, login string) (User, error) {
 	decErr := res.Decode(&resultUser)
 	return resultUser, decErr
 }
-func (m *Mongo) UpdateUser(ctx context.Context, login string, newUser User) (int64, error) {
+func (m *Mongo) UpdateUser(ctx context.Context, login string, newUser User) error {
 	res, err := m.mongo.Database("app").Collection("users").ReplaceOne(ctx, bson.M{
 		"_id": login,
 	}, newUser)
-	if res == nil {
-		return 0, err
+	if res.MatchedCount == 0 {
+		return ErrUserNotExist
 	}
-	return res.MatchedCount, err
+	return err
 }
-func (m *Mongo) DeleteUser(ctx context.Context, login string) (int64, error) {
+func (m *Mongo) DeleteUser(ctx context.Context, login string) error {
 	res, err := m.mongo.Database("app").Collection("users").DeleteOne(ctx, bson.M{
 		"_id": login,
 	})
-	if res == nil {
-		return 0, err
+	if res.DeletedCount == 0 {
+		return ErrUserNotExist
 	}
-	return res.DeletedCount, err
+	return err
 }

@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	var mongo storage.Mongo
+	var mongo storage.Repository = &storage.Mongo{}
 	connErr := mongo.Connect(context.Background(), "0.0.0.0", "27017")
 
 	if connErr != nil {
@@ -21,7 +21,7 @@ func main() {
 	defer mongo.Close()
 
 	var userCase cases.UserCase
-	userCase.New(&mongo)
+	userCase.New(mongo)
 
 	app := fiber.New()
 	api.CreateUserApi(context.Background(), &userCase, app)
