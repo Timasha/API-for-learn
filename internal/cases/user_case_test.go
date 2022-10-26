@@ -12,15 +12,15 @@ import (
 func TestCreateUser(t *testing.T) {
 
 	var mock storage.MockDb = storage.MockDb{
-		"Ivan": storage.User{
+		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
 		},
-		"Timofey": storage.User{
+		"Timofey": cases.User{
 			Login:    "Timofey",
 			Password: "13524000",
 		},
-		"User": storage.User{
+		"User": cases.User{
 			Login:    "User",
 			Password: "321476129",
 		},
@@ -75,15 +75,15 @@ func TestCreateUser(t *testing.T) {
 func TestReadUser(t *testing.T) {
 
 	var mock storage.MockDb = storage.MockDb{
-		"Ivan": storage.User{
+		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
 		},
-		"Timofey": storage.User{
+		"Timofey": cases.User{
 			Login:    "Timofey",
 			Password: "13524000",
 		},
-		"User": storage.User{
+		"User": cases.User{
 			Login:    "User",
 			Password: "321476129",
 		},
@@ -129,15 +129,15 @@ func TestReadUser(t *testing.T) {
 func TestUpdateUser(t *testing.T) {
 
 	var mock storage.MockDb = storage.MockDb{
-		"Ivan": storage.User{
+		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
 		},
-		"Timofey": storage.User{
+		"Timofey": cases.User{
 			Login:    "Timofey",
 			Password: "13524000",
 		},
-		"User": storage.User{
+		"User": cases.User{
 			Login:    "User",
 			Password: "321476129",
 		},
@@ -182,15 +182,15 @@ func TestUpdateUser(t *testing.T) {
 func TestDeleteUser(t *testing.T) {
 
 	var mock storage.MockDb = storage.MockDb{
-		"Ivan": storage.User{
+		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
 		},
-		"Timofey": storage.User{
+		"Timofey": cases.User{
 			Login:    "Timofey",
 			Password: "13524000",
 		},
-		"User": storage.User{
+		"User": cases.User{
 			Login:    "User",
 			Password: "321476129",
 		},

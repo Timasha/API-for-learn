@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	var mongo storage.Repository = &storage.Mongo{}
+	var mongo cases.UserStorage = &storage.Mongo{}
 	connErr := mongo.Connect(context.Background(), "0.0.0.0", "27017")
 
 	if connErr != nil {

@@ -1,11 +1,11 @@
-package storage
+package cases
 
 import (
 	"context"
 	"errors"
 )
 
-type Repository interface {
+type UserStorage interface {
 	Connect(context.Context, string, string) error
 	Close()
 	CreateUser(context.Context, User) (string, error)

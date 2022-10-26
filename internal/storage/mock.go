@@ -1,6 +1,9 @@
 package storage
 
-import "context"
+import (
+	"api-for-learn/internal/cases"
+	"context"
+)
 
 type MockDb map[string]interface{}
 
@@ -9,29 +12,29 @@ func (t MockDb) Connect(context.Context, string, string) error {
 }
 func (t MockDb) Close() {}
 
-func (t MockDb) CreateUser(ctx context.Context, user User) (string, error) {
+func (t MockDb) CreateUser(ctx context.Context, user cases.User) (string, error) {
 	if _, ok := t[user.Login]; ok {
-		return "", ErrUserExist
+		return "", cases.ErrUserExist
 	}
 	t[user.Login] = user
 	return user.Login, nil
 }
-func (t MockDb) ReadUser(ctx context.Context, login string) (User, error) {
+func (t MockDb) ReadUser(ctx context.Context, login string) (cases.User, error) {
 	if _, ok := t[login]; !ok {
-		return User{}, ErrUserNotExist
+		return cases.User{}, cases.ErrUserNotExist
 	}
-	return t[login].(User), nil
+	return t[login].(cases.User), nil
 }
-func (t MockDb) UpdateUser(ctx context.Context, login string, user User) error {
+func (t MockDb) UpdateUser(ctx context.Context, login string, user cases.User) error {
 	if _, ok := t[login]; !ok {
-		return ErrUserNotExist
+		return cases.ErrUserNotExist
 	}
 	t[login] = user
 	return nil
 }
 func (t MockDb) DeleteUser(ctx context.Context, login string) error {
 	if _, ok := t[login]; !ok {
-		return ErrUserNotExist
+		return cases.ErrUserNotExist
 	}
 	delete(t, login)
 	return nil
