@@ -1,7 +1,6 @@
-package storage
+package cases
 
 import (
-	"api-for-learn/internal/cases"
 	"context"
 )
 
@@ -12,29 +11,29 @@ func (t MockDb) Connect(context.Context, string, string) error {
 }
 func (t MockDb) Close() {}
 
-func (t MockDb) CreateUser(ctx context.Context, user cases.User) (string, error) {
+func (t MockDb) CreateUser(ctx context.Context, user User) (string, error) {
 	if _, ok := t[user.Login]; ok {
-		return "", cases.ErrUserExist
+		return "", ErrUserExist
 	}
 	t[user.Login] = user
 	return user.Login, nil
 }
-func (t MockDb) ReadUser(ctx context.Context, login string) (cases.User, error) {
+func (t MockDb) ReadUser(ctx context.Context, login string) (User, error) {
 	if _, ok := t[login]; !ok {
-		return cases.User{}, cases.ErrUserNotExist
+		return User{}, ErrUserNotExist
 	}
-	return t[login].(cases.User), nil
+	return t[login].(User), nil
 }
-func (t MockDb) UpdateUser(ctx context.Context, login string, user cases.User) error {
+func (t MockDb) UpdateUser(ctx context.Context, login string, user User) error {
 	if _, ok := t[login]; !ok {
-		return cases.ErrUserNotExist
+		return ErrUserNotExist
 	}
 	t[login] = user
 	return nil
 }
 func (t MockDb) DeleteUser(ctx context.Context, login string) error {
 	if _, ok := t[login]; !ok {
-		return cases.ErrUserNotExist
+		return ErrUserNotExist
 	}
 	delete(t, login)
 	return nil

@@ -2,7 +2,6 @@ package cases_test
 
 import (
 	"api-for-learn/internal/cases"
-	"api-for-learn/internal/storage"
 	"context"
 	"testing"
 
@@ -11,7 +10,7 @@ import (
 
 func TestCreateUser(t *testing.T) {
 
-	var mock storage.MockDb = storage.MockDb{
+	var mock cases.MockDb = cases.MockDb{
 		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
@@ -25,9 +24,23 @@ func TestCreateUser(t *testing.T) {
 			Password: "321476129",
 		},
 	}
-
+	// var mock *mocks.UserStorage = mocks.NewUserStorage(t)
 	var userCase cases.UserCase
 	userCase.New(mock)
+
+	// mock.On("CreateUser", context.Background(), cases.User{
+	// 	Login: "1231451",
+	// }).Return("1231451", nil)
+
+	// login, err := mock.CreateUser(context.Background(), cases.User{
+	// 	Login: "111",
+	// })
+
+	// if err != nil {
+	// 	t.Fatalf("Error create user: %v", err)
+	// }
+
+	// t.Log(login + "\n")
 
 	testCases := []struct {
 		user  cases.User
@@ -74,7 +87,7 @@ func TestCreateUser(t *testing.T) {
 
 func TestReadUser(t *testing.T) {
 
-	var mock storage.MockDb = storage.MockDb{
+	var mock cases.MockDb = cases.MockDb{
 		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
@@ -128,7 +141,7 @@ func TestReadUser(t *testing.T) {
 
 func TestUpdateUser(t *testing.T) {
 
-	var mock storage.MockDb = storage.MockDb{
+	var mock cases.MockDb = cases.MockDb{
 		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
@@ -181,7 +194,7 @@ func TestUpdateUser(t *testing.T) {
 
 func TestDeleteUser(t *testing.T) {
 
-	var mock storage.MockDb = storage.MockDb{
+	var mock cases.MockDb = cases.MockDb{
 		"Ivan": cases.User{
 			Login:    "Ivan",
 			Password: "12345",
